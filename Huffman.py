@@ -18,9 +18,13 @@ class Node:
         self.frequency = frequency
         self.leftChild = leftChild
         self.rightChild = rightChild
+        self.edge = None
         
     def getFrequency(self):
         return self.frequency
+
+    def setEdge(self, value):
+        self.edge = value
 
     def __str__(self):
         return f'{self.label} [{self.leftChild},{self.rightChild}]'
@@ -33,18 +37,23 @@ def build_huffman_tree(char_dict):
 
     while(len(nodes)) > 1:
         nodes.sort(key = attrgetter('frequency'))
+
         left = nodes[0]
+        left.setEdge(0)
+
         right = nodes[1]
+        right.setEdge(1)
+
         sum = left.getFrequency() + right.getFrequency()
         node = Node(str(sum), sum, left, right)
+        
         nodes.remove(left)
         nodes.remove(right)
         nodes.append(node)
     
-    for node in nodes:
-        print(node)
+    HuffmanTree = nodes
+    return HuffmanTree 
        
-
 if __name__ == '__main__':
     build_huffman_tree({'B' : 1, 'D' : 3, 'A' : 5, 'C' : 6})
 
