@@ -1,5 +1,4 @@
 from operator import itemgetter, attrgetter
-from turtle import left
 
 def count_occurences(text):
     dict = {}
@@ -18,7 +17,7 @@ class Node:
         self.frequency = frequency
         self.leftChild = leftChild
         self.rightChild = rightChild
-        self.edge = None
+        self.edge = ''
         
     def getFrequency(self):
         return self.frequency
@@ -27,7 +26,7 @@ class Node:
         self.edge = value
 
     def __str__(self):
-        return f'{self.label} [{self.leftChild},{self.rightChild}]'
+        return f'{self.label} {self.edge} [{self.leftChild},{self.rightChild}]'
 
 def build_huffman_tree(char_dict):
     nodes = []
@@ -35,14 +34,14 @@ def build_huffman_tree(char_dict):
     for char in char_dict:
         nodes.append(Node(char, char_dict[char]))
 
-    while(len(nodes)) > 1:
+    while len(nodes) > 1:
         nodes.sort(key = attrgetter('frequency'))
 
         left = nodes[0]
-        left.setEdge(0)
+        left.setEdge('0')
 
         right = nodes[1]
-        right.setEdge(1)
+        right.setEdge('1')
 
         sum = left.getFrequency() + right.getFrequency()
         node = Node(str(sum), sum, left, right)
@@ -52,8 +51,22 @@ def build_huffman_tree(char_dict):
         nodes.append(node)
     
     HuffmanTree = nodes
-    return HuffmanTree 
-       
+    return HuffmanTree
+
+def calculateCodes(node, value = '', code_dict = {}):
+    newValue = value + node.edge
+
+    if node.leftChild != None:
+        calculateCodes(node.leftChild, newValue, code_dict)
+    if node.rightChild != None:
+        calculateCodes(node.rightChild, newValue, code_dict)
+    
+    if node.leftChild == None and node.rightChild == None:
+        code_dict[node.label] = newValue
+    
+    return code_dict
+
 if __name__ == '__main__':
-    build_huffman_tree({'B' : 1, 'D' : 3, 'A' : 5, 'C' : 6})
+    codes = calculateCodes(build_huffman_tree({'B' : 1, 'D' : 3, 'A' : 5, 'C' : 6})[0])
+    print(codes)
 
