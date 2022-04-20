@@ -1,6 +1,7 @@
 from operator import attrgetter
 from os import path
 from generateCompFile import generateCompFile
+from generateFreqFile import generateFreqFile
 
 def count_occurences(text):
     d = {}
@@ -98,4 +99,6 @@ if __name__ == '__main__':
     print(calculateCompressRate(file.name, res))
     print(calculateAverageBits(codes))
     file_name = file.name.removeprefix('./input/')
+    file_name = file_name.removesuffix('.txt')
     generateCompFile(file_name, res)
+    generateFreqFile(file_name, dict)
