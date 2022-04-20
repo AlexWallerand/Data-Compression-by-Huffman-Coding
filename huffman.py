@@ -1,5 +1,6 @@
 from operator import attrgetter
 from os import path
+from generateCompFile import generateCompFile
 
 def count_occurences(text):
     d = {}
@@ -82,7 +83,7 @@ def calculateAverageBits(code_dict):
     return res
 
 if __name__ == '__main__':
-    file = open('./Tests/textesimple.txt', 'r')
+    file = open('./input/textesimple.txt', 'r')
     text = file.read()
     dict = count_occurences(text)
     print(dict)
@@ -96,3 +97,5 @@ if __name__ == '__main__':
     print(res)
     print(calculateCompressRate(file.name, res))
     print(calculateAverageBits(codes))
+    file_name = file.name.removeprefix('./input/')
+    generateCompFile(file_name, res)
