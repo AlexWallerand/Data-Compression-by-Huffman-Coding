@@ -1,4 +1,5 @@
 from operator import attrgetter
+from os import path
 
 def count_occurences(text):
     d = {}
@@ -66,6 +67,20 @@ def calculateCodes(node, value = '', code_dict = {}):
     
     return code_dict
 
+def calculateCompressRate(file_name, res):
+    initial = path.getsize(file_name)
+    final = len(res)//8
+    rate = 1 - (final/initial)
+    return rate
+
+def calculateAverageBits(code_dict):
+    values = code_dict.values()
+    res = 0
+    for value in values:
+        res += len(value)
+    res /= len(values)
+    return res
+
 if __name__ == '__main__':
     file = open('./Tests/textesimple.txt', 'r')
     text = file.read()
@@ -79,3 +94,5 @@ if __name__ == '__main__':
         res += codes[char]
     print('\nTexte compressé :\n')
     print(res)
+    print(calculateCompressRate(file.name, res))
+    print(calculateAverageBits(codes))
