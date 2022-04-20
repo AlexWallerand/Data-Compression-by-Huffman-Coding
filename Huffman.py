@@ -1,14 +1,14 @@
-from operator import itemgetter, attrgetter
+from operator import attrgetter
 
 def count_occurences(text):
-    dict = {}
+    d = {}
     for char in text:
-        if char in dict:
-            dict[char] += 1
+        if char in d:
+            d[char] += 1
         else:
-            dict[char] = 1
-    dict = sorted(dict.items(), key = itemgetter(1))
-    return dict
+            d[char] = 1
+    d = dict(sorted(d.items(), key = lambda x: (x[1], x[0])))
+    return d
 
 class Node:
 
@@ -67,6 +67,15 @@ def calculateCodes(node, value = '', code_dict = {}):
     return code_dict
 
 if __name__ == '__main__':
-    codes = calculateCodes(build_huffman_tree({'B' : 1, 'D' : 3, 'A' : 5, 'C' : 6})[0])
+    file = open('./Tests/textesimple.txt', 'r')
+    text = file.read()
+    dict = count_occurences(text)
+    print(dict)
+    tree = build_huffman_tree(dict)
+    codes = calculateCodes(tree[0])
     print(codes)
-
+    res = ""
+    for char in text:
+        res += codes[char]
+    print('\nTexte compressé :\n')
+    print(res)
