@@ -98,4 +98,5 @@ if __name__ == '__main__':
     print(calculateCompressRate(file.name, res))
     print(calculateAverageBits(codes))
     file_name = file.name.removeprefix('./input/')
+    file_name = file_name.removesuffix('.txt')
     generateCompFile(file_name, res)
