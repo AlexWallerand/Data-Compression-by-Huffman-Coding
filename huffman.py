@@ -73,6 +73,7 @@ def calculateCompressRate(file_name, res):
     initial = path.getsize(file_name)
     final = len(res)//8
     rate = 1 - (final/initial)
+    rate = round(rate, 3)
     return rate
 
 def calculateAverageBits(code_dict):
@@ -81,24 +82,5 @@ def calculateAverageBits(code_dict):
     for value in values:
         res += len(value)
     res /= len(values)
+    res = round(res, 3)
     return res
-
-if __name__ == '__main__':
-    file = open('./input/textesimple.txt', 'r')
-    text = file.read()
-    dict = count_occurences(text)
-    print(dict)
-    tree = build_huffman_tree(dict)
-    codes = calculateCodes(tree[0])
-    print(codes)
-    res = ""
-    for char in text:
-        res += codes[char]
-    print('\nTexte compressé :\n')
-    print(res)
-    print(calculateCompressRate(file.name, res))
-    print(calculateAverageBits(codes))
-    file_name = file.name.removeprefix('./input/')
-    file_name = file_name.removesuffix('.txt')
-    generateCompFile(file_name, res)
-    generateFreqFile(file_name, dict)
