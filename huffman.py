@@ -1,7 +1,5 @@
 from operator import attrgetter
 from os import path
-from generateCompFile import generateCompFile
-from generateFreqFile import generateFreqFile
 
 def count_occurences(text):
     d = {}
@@ -38,7 +36,7 @@ def build_huffman_tree(char_dict):
         nodes.append(Node(char, char_dict[char]))
 
     while len(nodes) > 1:
-        nodes.sort(key = attrgetter('frequency'))
+        nodes.sort(key = attrgetter('frequency','label'))
 
         left = nodes[0]
         left.setEdge('0')
@@ -56,7 +54,7 @@ def build_huffman_tree(char_dict):
     HuffmanTree = nodes
     return HuffmanTree
 
-def calculateCodes(node, value = '', code_dict = {}):
+def calculateCodes(node, value, code_dict):
     newValue = value + node.edge
 
     if node.leftChild != None:
@@ -69,11 +67,14 @@ def calculateCodes(node, value = '', code_dict = {}):
     
     return code_dict
 
-def calculateCompressRate(file_name, res):
+def calculateCompressRate(file_name):
     initial = path.getsize(file_name)
-    final = len(res)//8
+    file_name = file_name.removeprefix('./input/').removesuffix('.txt')
+    file_name = f'./output/{file_name}_comp.bin'
+    final = path.getsize(file_name)
     rate = 1 - (final/initial)
-    rate = round(rate, 3)
+    rate = round(rate, 4)
+    rate *= 100
     return rate
 
 def calculateAverageBits(code_dict):
