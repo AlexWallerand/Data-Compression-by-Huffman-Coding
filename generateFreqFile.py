@@ -31,11 +31,11 @@ def generateFreqFile(file_name, char_dict):
     No return, prints that the frequency file has been generated
     """
     f = open(f'./output/{file_name}_freq.txt', 'w')
-    f.write(f'Number of characters : {alphabet_size(char_dict)}\n')
+    f.write(f'{alphabet_size(char_dict)}\n')
     for char in char_dict:
         if char != '\n':
-            f.write(f'{char} : {str(char_dict[char])}\n')
+            f.write(f'{char} {str(char_dict[char])}\n')
         else:
-            f.write(f'\\n : {str(char_dict[char])}\n')
+            f.write(f'\\n {str(char_dict[char])}\n')
     f.close()
     print(f'Frequency file for {file_name} successfully generated')
